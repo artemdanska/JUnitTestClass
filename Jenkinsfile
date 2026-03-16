@@ -6,6 +6,10 @@ pipeline {
         DOCKER_TAG = "latest"
     }
 
+    tools {
+        maven 'Maven' //
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -19,7 +23,17 @@ pipeline {
             }
             post {
                 always {
-                    jacoco(execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java')
+                    script {
+                        if (Jenkins.instance.pluginManager.getPlugin('jacoco')) {
+                            jacoco(
+                                    execPattern: '**/target/jacoco.exec',
+                                    classPattern: '**/target/classes',
+                                    sourcePattern: '**/src/main/java'
+                            )
+                        } else {
+                            echo 'JaCoCo plugin not installed, skipping report'
+                        }
+                    }
                 }
             }
         }
