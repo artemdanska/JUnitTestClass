@@ -17,23 +17,18 @@ pipeline {
             }
         }
 
+
         stage('Build & Test') {
             steps {
                 sh 'mvn clean package jacoco:report'
             }
             post {
                 always {
-                    script {
-                        if (Jenkins.instance.pluginManager.getPlugin('jacoco')) {
-                            jacoco(
-                                    execPattern: '**/target/jacoco.exec',
-                                    classPattern: '**/target/classes',
-                                    sourcePattern: '**/src/main/java'
-                            )
-                        } else {
-                            echo 'JaCoCo plugin not installed, skipping report'
-                        }
-                    }
+                    jacoco(
+                            execPattern: '**/target/jacoco.exec',
+                            classPattern: '**/target/classes',
+                            sourcePattern: '**/src/main/java'
+                    )
                 }
             }
         }
