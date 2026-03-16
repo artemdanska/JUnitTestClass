@@ -1,5 +1,9 @@
 public class TemperatureConverter {
 
+    public static void main(String[] args) {
+        System.out.println("Temperature Converter started");
+    }
+
     public double fahrenheitToCelsius(double fahrenheit) {
         return (fahrenheit - 32) * 5 / 9;
     }
